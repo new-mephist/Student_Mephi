@@ -1,0 +1,2110 @@
+
+CREATE TABLE Bonus (
+       Code_bonus           INTEGER NOT NULL,
+       Name                 CHAR(36) NULL,
+       Score                INTEGER NULL
+);
+
+
+ALTER TABLE Bonus
+       ADD  ( PRIMARY KEY (Code_bonus) ) ;
+
+
+CREATE TABLE User (
+       ID                   CHAR(18) NOT NULL,
+       Password             CHAR(18) NULL,
+       Group                CHAR(18) NULL,
+       E_mail               CHAR(35) NULL,
+       Points               INTEGER NULL,
+       Extra_info           CHAR(200) NULL
+);
+
+
+ALTER TABLE User
+       ADD  ( PRIMARY KEY (ID) ) ;
+
+
+CREATE TABLE News (
+       Code_news            INTEGER NOT NULL,
+       Title                CHAR(20) NULL,
+       Author               CHAR(25) NULL,
+       Content              CHAR(300) NULL,
+       Date_of_creation     DATE NULL
+);
+
+
+ALTER TABLE News
+       ADD  ( PRIMARY KEY (Code_news) ) ;
+
+
+CREATE TABLE Comment (
+       Code_comment         INTEGER NOT NULL,
+       Code_news            INTEGER NULL,
+       ID                   INTEGER NULL,
+       Content              CHAR(300) NULL,
+       Date_of_creation     DATE NULL,
+       Score                INTEGER NULL,
+       User_ID              CHAR(18) NULL
+);
+
+
+ALTER TABLE Comment
+       ADD  ( PRIMARY KEY (Code_comment) ) ;
+
+
+CREATE TABLE Source (
+       Code_source          INTEGER NOT NULL,
+       Name                 CHAR(20) NULL
+);
+
+
+ALTER TABLE Source
+       ADD  ( PRIMARY KEY (Code_source) ) ;
+
+
+CREATE TABLE External_source (
+       Code_source          INTEGER NOT NULL,
+       Link                 CHAR(100) NULL,
+       Name                 CHAR(40) NULL,
+       Description          CHAR(300) NULL
+);
+
+
+ALTER TABLE External_source
+       ADD  ( PRIMARY KEY (Code_source) ) ;
+
+
+CREATE TABLE Institute (
+       Code_source          INTEGER NOT NULL,
+       Name                 CHAR(100) NULL,
+       Link_on_ofic_cite    CHAR(100) NULL,
+       Link_on_group        CHAR(100) NULL
+);
+
+
+ALTER TABLE Institute
+       ADD  ( PRIMARY KEY (Code_source) ) ;
+
+
+CREATE TABLE Speciality (
+       Code_speciality      INTEGER NOT NULL,
+       Name                 CHAR(40) NULL
+);
+
+
+ALTER TABLE Speciality
+       ADD  ( PRIMARY KEY (Code_speciality) ) ;
+
+
+CREATE TABLE Department (
+       Number               INTEGER NOT NULL,
+       Name                 CHAR(40) NULL,
+       Link                 CHAR(100) NULL,
+       Description          CHAR(300) NULL
+);
+
+
+ALTER TABLE Department
+       ADD  ( PRIMARY KEY (Number) ) ;
+
+
+CREATE TABLE Specialization (
+       Coda_specializ       INTEGER NOT NULL,
+       Number               INTEGER NOT NULL,
+       Code_speciality      INTEGER NOT NULL,
+       Name                 CHAR(40) NULL
+);
+
+
+ALTER TABLE Specialization
+       ADD  ( PRIMARY KEY (Coda_specializ) ) ;
+
+
+CREATE TABLE Subject (
+       Code_subj            INTEGER NOT NULL,
+       Name                 CHAR(25) NULL,
+       Semestr              INTEGER NULL
+);
+
+
+ALTER TABLE Subject
+       ADD  ( PRIMARY KEY (Code_subj) ) ;
+
+
+CREATE TABLE Material (
+       Code_material        INTEGER NOT NULL,
+       Code_subj            INTEGER NULL,
+       File                 BLOB NULL,
+       Type                 CHAR(18) NULL,
+       Department           INTEGER NULL,
+       Semestr              INTEGER NULL
+);
+
+
+ALTER TABLE Material
+       ADD  ( PRIMARY KEY (Code_material) ) ;
+
+
+CREATE TABLE Disk (
+       Link                 CHAR(100) NOT NULL,
+       Code_material        INTEGER NULL,
+       Admission_year       INTEGER NULL,
+       Completeness_level   FLOAT NULL
+);
+
+
+ALTER TABLE Disk
+       ADD  ( PRIMARY KEY (Link) ) ;
+
+
+CREATE TABLE Teacher (
+       ID_teacher           INTEGER NOT NULL,
+       Number               INTEGER NULL,
+       Photo                BLOB NULL,
+       FIO                  CHAR(40) NULL,
+       Description          CHAR(300) NULL,
+       Is_added             INTEGER NULL
+);
+
+
+ALTER TABLE Teacher
+       ADD  ( PRIMARY KEY (ID_teacher) ) ;
+
+
+CREATE TABLE Citation (
+       ID_citation          CHAR(18) NOT NULL,
+       ID_teacher           INTEGER NULL,
+       Content              CHAR(200) NULL
+);
+
+
+ALTER TABLE Citation
+       ADD  ( PRIMARY KEY (ID_citation) ) ;
+
+
+CREATE TABLE Bonus_User (
+       Code_bonus           INTEGER NOT NULL,
+       ID                   CHAR(18) NOT NULL
+);
+
+
+ALTER TABLE Bonus_User
+       ADD  ( PRIMARY KEY (Code_bonus, ID) ) ;
+
+
+CREATE TABLE Subject_Teacher (
+       Code_subj            INTEGER NOT NULL,
+       ID_teacher           INTEGER NOT NULL
+);
+
+
+ALTER TABLE Subject_Teacher
+       ADD  ( PRIMARY KEY (Code_subj, ID_teacher) ) ;
+
+
+CREATE TABLE News_Source (
+       Code_news            INTEGER NOT NULL,
+       Code_source          INTEGER NOT NULL
+);
+
+
+ALTER TABLE News_Source
+       ADD  ( PRIMARY KEY (Code_news, Code_source) ) ;
+
+
+CREATE TABLE Institute_Speciality (
+       Code_speciality      INTEGER NOT NULL,
+       Code_source          INTEGER NOT NULL
+);
+
+
+ALTER TABLE Institute_Speciality
+       ADD  ( PRIMARY KEY (Code_speciality, Code_source) ) ;
+
+
+CREATE TABLE Subject_Specialization (
+       Code_subj            INTEGER NOT NULL,
+       Coda_specializ       INTEGER NOT NULL
+);
+
+
+ALTER TABLE Subject_Specialization
+       ADD  ( PRIMARY KEY (Code_subj, Coda_specializ) ) ;
+
+
+ALTER TABLE Comment
+       ADD  ( FOREIGN KEY (Code_news)
+                             REFERENCES News ) ;
+
+
+ALTER TABLE Comment
+       ADD  ( FOREIGN KEY (ID)
+                             REFERENCES User ) ;
+
+
+ALTER TABLE External_source
+       ADD  ( FOREIGN KEY (Code_source)
+                             REFERENCES Source
+                             ON DELETE CASCADE ) ;
+
+
+ALTER TABLE Institute
+       ADD  ( FOREIGN KEY (Code_source)
+                             REFERENCES Source
+                             ON DELETE CASCADE ) ;
+
+
+ALTER TABLE Specialization
+       ADD  ( FOREIGN KEY (Number)
+                             REFERENCES Department ) ;
+
+
+ALTER TABLE Specialization
+       ADD  ( FOREIGN KEY (Code_speciality)
+                             REFERENCES Speciality ) ;
+
+
+ALTER TABLE Material
+       ADD  ( FOREIGN KEY (Code_subj)
+                             REFERENCES Subject ) ;
+
+
+ALTER TABLE Disk
+       ADD  ( FOREIGN KEY (Code_material)
+                             REFERENCES Material ) ;
+
+
+ALTER TABLE Teacher
+       ADD  ( FOREIGN KEY (Number)
+                             REFERENCES Department ) ;
+
+
+ALTER TABLE Citation
+       ADD  ( FOREIGN KEY (ID_teacher)
+                             REFERENCES Teacher ) ;
+
+
+ALTER TABLE Bonus_User
+       ADD  ( FOREIGN KEY (ID)
+                             REFERENCES User ) ;
+
+
+ALTER TABLE Bonus_User
+       ADD  ( FOREIGN KEY (Code_bonus)
+                             REFERENCES Bonus ) ;
+
+
+ALTER TABLE Subject_Teacher
+       ADD  ( FOREIGN KEY (ID_teacher)
+                             REFERENCES Teacher ) ;
+
+
+ALTER TABLE Subject_Teacher
+       ADD  ( FOREIGN KEY (Code_subj)
+                             REFERENCES Subject ) ;
+
+
+ALTER TABLE News_Source
+       ADD  ( FOREIGN KEY (Code_source)
+                             REFERENCES Source ) ;
+
+
+ALTER TABLE News_Source
+       ADD  ( FOREIGN KEY (Code_news)
+                             REFERENCES News ) ;
+
+
+ALTER TABLE Institute_Speciality
+       ADD  ( FOREIGN KEY (Code_speciality)
+                             REFERENCES Speciality ) ;
+
+
+ALTER TABLE Institute_Speciality
+       ADD  ( FOREIGN KEY (Code_source)
+                             REFERENCES Institute ) ;
+
+
+ALTER TABLE Subject_Specialization
+       ADD  ( FOREIGN KEY (Coda_specializ)
+                             REFERENCES Specialization ) ;
+
+
+ALTER TABLE Subject_Specialization
+       ADD  ( FOREIGN KEY (Code_subj)
+                             REFERENCES Subject ) ;
+
+
+
+
+create trigger tD_Bonus after DELETE on Bonus for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- DELETE trigger on Bonus 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Bonus R/2 Bonus_User ON PARENT DELETE RESTRICT */
+    select count(*) into numrows
+      from Bonus_User
+      where
+        /*  %JoinFKPK(Bonus_User,:%Old," = "," and") */
+        Bonus_User.Code_bonus = :old.Code_bonus;
+    if (numrows > 0)
+    then
+      raise_application_error(
+        -20001,
+        'Cannot DELETE Bonus because Bonus_User exists.'
+      );
+    end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_Bonus after UPDATE on Bonus for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on Bonus 
+declare numrows INTEGER;
+begin
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Bonus R/2 Bonus_User ON PARENT UPDATE RESTRICT */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or ") */
+    :old.Code_bonus <> :new.Code_bonus
+  then
+    select count(*) into numrows
+      from Bonus_User
+      where
+        /*  %JoinFKPK(Bonus_User,:%Old," = "," and") */
+        Bonus_User.Code_bonus = :old.Code_bonus;
+    if (numrows > 0)
+    then 
+      raise_application_error(
+        -20005,
+        'Cannot UPDATE Bonus because Bonus_User exists.'
+      );
+    end if;
+  end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tD_User after DELETE on User for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- DELETE trigger on User 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* User R/7 Comment ON PARENT DELETE SET NULL */
+    update Comment
+      set
+        /* %SetFK(Comment,NULL) */
+        Comment.ID = NULL
+      where
+        /* %JoinFKPK(Comment,:%Old," = "," and") */
+        Comment.ID = :old.ID;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* User R/3 Bonus_User ON PARENT DELETE RESTRICT */
+    select count(*) into numrows
+      from Bonus_User
+      where
+        /*  %JoinFKPK(Bonus_User,:%Old," = "," and") */
+        Bonus_User.ID = :old.ID;
+    if (numrows > 0)
+    then
+      raise_application_error(
+        -20001,
+        'Cannot DELETE User because Bonus_User exists.'
+      );
+    end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_User after UPDATE on User for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on User 
+declare numrows INTEGER;
+begin
+  /* User R/7 Comment ON PARENT UPDATE SET NULL */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or " */
+    :old.ID <> :new.ID
+  then
+    update Comment
+      set
+        /* %SetFK(Comment,NULL) */
+        Comment.ID = NULL
+      where
+        /* %JoinFKPK(Comment,:%Old," = ",",") */
+        Comment.ID = :old.ID;
+  end if;
+
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* User R/3 Bonus_User ON PARENT UPDATE RESTRICT */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or ") */
+    :old.ID <> :new.ID
+  then
+    select count(*) into numrows
+      from Bonus_User
+      where
+        /*  %JoinFKPK(Bonus_User,:%Old," = "," and") */
+        Bonus_User.ID = :old.ID;
+    if (numrows > 0)
+    then 
+      raise_application_error(
+        -20005,
+        'Cannot UPDATE User because Bonus_User exists.'
+      );
+    end if;
+  end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tD_News after DELETE on News for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- DELETE trigger on News 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* News R/10 News_Source ON PARENT DELETE RESTRICT */
+    select count(*) into numrows
+      from News_Source
+      where
+        /*  %JoinFKPK(News_Source,:%Old," = "," and") */
+        News_Source.Code_news = :old.Code_news;
+    if (numrows > 0)
+    then
+      raise_application_error(
+        -20001,
+        'Cannot DELETE News because News_Source exists.'
+      );
+    end if;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* News R/8 Comment ON PARENT DELETE SET NULL */
+    update Comment
+      set
+        /* %SetFK(Comment,NULL) */
+        Comment.Code_news = NULL
+      where
+        /* %JoinFKPK(Comment,:%Old," = "," and") */
+        Comment.Code_news = :old.Code_news;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_News after UPDATE on News for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on News 
+declare numrows INTEGER;
+begin
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* News R/10 News_Source ON PARENT UPDATE RESTRICT */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or ") */
+    :old.Code_news <> :new.Code_news
+  then
+    select count(*) into numrows
+      from News_Source
+      where
+        /*  %JoinFKPK(News_Source,:%Old," = "," and") */
+        News_Source.Code_news = :old.Code_news;
+    if (numrows > 0)
+    then 
+      raise_application_error(
+        -20005,
+        'Cannot UPDATE News because News_Source exists.'
+      );
+    end if;
+  end if;
+
+  /* News R/8 Comment ON PARENT UPDATE SET NULL */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or " */
+    :old.Code_news <> :new.Code_news
+  then
+    update Comment
+      set
+        /* %SetFK(Comment,NULL) */
+        Comment.Code_news = NULL
+      where
+        /* %JoinFKPK(Comment,:%Old," = ",",") */
+        Comment.Code_news = :old.Code_news;
+  end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tI_Comment after INSERT on Comment for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- INSERT trigger on Comment 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* News R/8 Comment ON CHILD INSERT SET NULL */
+    update Comment
+      set
+        /* %SetFK(Comment,NULL) */
+        Comment.Code_news = NULL
+      where
+        not exists (
+          select * from News
+            where
+              /* %JoinFKPK(:%New,News," = "," and") */
+              :new.Code_news = News.Code_news
+        ) and
+        /* %JoinPKPK(Comment,:%New," = "," and") */
+        Comment.Code_comment = :new.Code_comment;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* User R/7 Comment ON CHILD INSERT SET NULL */
+    update Comment
+      set
+        /* %SetFK(Comment,NULL) */
+        Comment.ID = NULL
+      where
+        not exists (
+          select * from User
+            where
+              /* %JoinFKPK(:%New,User," = "," and") */
+              :new.ID = User.ID
+        ) and
+        /* %JoinPKPK(Comment,:%New," = "," and") */
+        Comment.Code_comment = :new.Code_comment;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_Comment after UPDATE on Comment for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on Comment 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* News R/8 Comment ON CHILD UPDATE SET NULL */
+    update Comment
+      set
+        /* %SetFK(Comment,NULL) */
+        Comment.Code_news = NULL
+      where
+        not exists (
+          select * from News
+            where
+              /* %JoinFKPK(:%New,News," = "," and") */
+              :new.Code_news = News.Code_news
+        ) and
+        /* %JoinPKPK(Comment,:%New," = "," and") */
+        Comment.Code_comment = :new.Code_comment;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* User R/7 Comment ON CHILD UPDATE SET NULL */
+    update Comment
+      set
+        /* %SetFK(Comment,NULL) */
+        Comment.ID = NULL
+      where
+        not exists (
+          select * from User
+            where
+              /* %JoinFKPK(:%New,User," = "," and") */
+              :new.ID = User.ID
+        ) and
+        /* %JoinPKPK(Comment,:%New," = "," and") */
+        Comment.Code_comment = :new.Code_comment;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tD_Source after DELETE on Source for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- DELETE trigger on Source 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Source  External_source ON PARENT DELETE CASCADE */
+    delete from External_source
+      where
+        /*  %JoinFKPK(External_source,:%Old," = "," and") */
+        External_source.Code_source = :old.Code_source;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Source  Institute ON PARENT DELETE CASCADE */
+    delete from Institute
+      where
+        /*  %JoinFKPK(Institute,:%Old," = "," and") */
+        Institute.Code_source = :old.Code_source;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Source R/11 News_Source ON PARENT DELETE RESTRICT */
+    select count(*) into numrows
+      from News_Source
+      where
+        /*  %JoinFKPK(News_Source,:%Old," = "," and") */
+        News_Source.Code_source = :old.Code_source;
+    if (numrows > 0)
+    then
+      raise_application_error(
+        -20001,
+        'Cannot DELETE Source because News_Source exists.'
+      );
+    end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_Source after UPDATE on Source for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on Source 
+declare numrows INTEGER;
+begin
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Source  External_source ON PARENT UPDATE CASCADE */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or ") */
+    :old.Code_source <> :new.Code_source
+  then
+    update External_source
+      set
+        /*  %JoinFKPK(External_source,:%New," = ",",") */
+        External_source.Code_source = :new.Code_source
+      where
+        /*  %JoinFKPK(External_source,:%Old," = "," and") */
+        External_source.Code_source = :old.Code_source;
+  end if;
+
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Source  Institute ON PARENT UPDATE CASCADE */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or ") */
+    :old.Code_source <> :new.Code_source
+  then
+    update Institute
+      set
+        /*  %JoinFKPK(Institute,:%New," = ",",") */
+        Institute.Code_source = :new.Code_source
+      where
+        /*  %JoinFKPK(Institute,:%Old," = "," and") */
+        Institute.Code_source = :old.Code_source;
+  end if;
+
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Source R/11 News_Source ON PARENT UPDATE RESTRICT */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or ") */
+    :old.Code_source <> :new.Code_source
+  then
+    select count(*) into numrows
+      from News_Source
+      where
+        /*  %JoinFKPK(News_Source,:%Old," = "," and") */
+        News_Source.Code_source = :old.Code_source;
+    if (numrows > 0)
+    then 
+      raise_application_error(
+        -20005,
+        'Cannot UPDATE Source because News_Source exists.'
+      );
+    end if;
+  end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tI_External_source after INSERT on External_source for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- INSERT trigger on External_source 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Source  External_source ON CHILD INSERT RESTRICT */
+    select count(*) into numrows
+      from Source
+      where
+        /* %JoinFKPK(:%New,Source," = "," and") */
+        :new.Code_source = Source.Code_source;
+    if (
+      /* %NotnullFK(:%New," is not null and") */
+      
+      numrows = 0
+    )
+    then
+      raise_application_error(
+        -20002,
+        'Cannot INSERT External_source because Source does not exist.'
+      );
+    end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_External_source after UPDATE on External_source for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on External_source 
+declare numrows INTEGER;
+begin
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Source  External_source ON CHILD UPDATE RESTRICT */
+  select count(*) into numrows
+    from Source
+    where
+      /* %JoinFKPK(:%New,Source," = "," and") */
+      :new.Code_source = Source.Code_source;
+  if (
+    /* %NotnullFK(:%New," is not null and") */
+    
+    numrows = 0
+  )
+  then
+    raise_application_error(
+      -20007,
+      'Cannot UPDATE External_source because Source does not exist.'
+    );
+  end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tD_Institute after DELETE on Institute for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- DELETE trigger on Institute 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Institute R/13 Institute_Speciality ON PARENT DELETE RESTRICT */
+    select count(*) into numrows
+      from Institute_Speciality
+      where
+        /*  %JoinFKPK(Institute_Speciality,:%Old," = "," and") */
+        Institute_Speciality.Code_source = :old.Code_source;
+    if (numrows > 0)
+    then
+      raise_application_error(
+        -20001,
+        'Cannot DELETE Institute because Institute_Speciality exists.'
+      );
+    end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tI_Institute after INSERT on Institute for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- INSERT trigger on Institute 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Source  Institute ON CHILD INSERT RESTRICT */
+    select count(*) into numrows
+      from Source
+      where
+        /* %JoinFKPK(:%New,Source," = "," and") */
+        :new.Code_source = Source.Code_source;
+    if (
+      /* %NotnullFK(:%New," is not null and") */
+      
+      numrows = 0
+    )
+    then
+      raise_application_error(
+        -20002,
+        'Cannot INSERT Institute because Source does not exist.'
+      );
+    end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_Institute after UPDATE on Institute for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on Institute 
+declare numrows INTEGER;
+begin
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Institute R/13 Institute_Speciality ON PARENT UPDATE RESTRICT */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or ") */
+    :old.Code_source <> :new.Code_source
+  then
+    select count(*) into numrows
+      from Institute_Speciality
+      where
+        /*  %JoinFKPK(Institute_Speciality,:%Old," = "," and") */
+        Institute_Speciality.Code_source = :old.Code_source;
+    if (numrows > 0)
+    then 
+      raise_application_error(
+        -20005,
+        'Cannot UPDATE Institute because Institute_Speciality exists.'
+      );
+    end if;
+  end if;
+
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Source  Institute ON CHILD UPDATE RESTRICT */
+  select count(*) into numrows
+    from Source
+    where
+      /* %JoinFKPK(:%New,Source," = "," and") */
+      :new.Code_source = Source.Code_source;
+  if (
+    /* %NotnullFK(:%New," is not null and") */
+    
+    numrows = 0
+  )
+  then
+    raise_application_error(
+      -20007,
+      'Cannot UPDATE Institute because Source does not exist.'
+    );
+  end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tD_Speciality after DELETE on Speciality for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- DELETE trigger on Speciality 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Speciality R/15 Specialization ON PARENT DELETE RESTRICT */
+    select count(*) into numrows
+      from Specialization
+      where
+        /*  %JoinFKPK(Specialization,:%Old," = "," and") */
+        Specialization.Code_speciality = :old.Code_speciality;
+    if (numrows > 0)
+    then
+      raise_application_error(
+        -20001,
+        'Cannot DELETE Speciality because Specialization exists.'
+      );
+    end if;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Speciality R/14 Institute_Speciality ON PARENT DELETE RESTRICT */
+    select count(*) into numrows
+      from Institute_Speciality
+      where
+        /*  %JoinFKPK(Institute_Speciality,:%Old," = "," and") */
+        Institute_Speciality.Code_speciality = :old.Code_speciality;
+    if (numrows > 0)
+    then
+      raise_application_error(
+        -20001,
+        'Cannot DELETE Speciality because Institute_Speciality exists.'
+      );
+    end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_Speciality after UPDATE on Speciality for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on Speciality 
+declare numrows INTEGER;
+begin
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Speciality R/15 Specialization ON PARENT UPDATE RESTRICT */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or ") */
+    :old.Code_speciality <> :new.Code_speciality
+  then
+    select count(*) into numrows
+      from Specialization
+      where
+        /*  %JoinFKPK(Specialization,:%Old," = "," and") */
+        Specialization.Code_speciality = :old.Code_speciality;
+    if (numrows > 0)
+    then 
+      raise_application_error(
+        -20005,
+        'Cannot UPDATE Speciality because Specialization exists.'
+      );
+    end if;
+  end if;
+
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Speciality R/14 Institute_Speciality ON PARENT UPDATE RESTRICT */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or ") */
+    :old.Code_speciality <> :new.Code_speciality
+  then
+    select count(*) into numrows
+      from Institute_Speciality
+      where
+        /*  %JoinFKPK(Institute_Speciality,:%Old," = "," and") */
+        Institute_Speciality.Code_speciality = :old.Code_speciality;
+    if (numrows > 0)
+    then 
+      raise_application_error(
+        -20005,
+        'Cannot UPDATE Speciality because Institute_Speciality exists.'
+      );
+    end if;
+  end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tD_Department after DELETE on Department for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- DELETE trigger on Department 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Department R/17 Teacher ON PARENT DELETE SET NULL */
+    update Teacher
+      set
+        /* %SetFK(Teacher,NULL) */
+        Teacher.Number = NULL
+      where
+        /* %JoinFKPK(Teacher,:%Old," = "," and") */
+        Teacher.Number = :old.Number;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Department R/16 Specialization ON PARENT DELETE RESTRICT */
+    select count(*) into numrows
+      from Specialization
+      where
+        /*  %JoinFKPK(Specialization,:%Old," = "," and") */
+        Specialization.Number = :old.Number;
+    if (numrows > 0)
+    then
+      raise_application_error(
+        -20001,
+        'Cannot DELETE Department because Specialization exists.'
+      );
+    end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_Department after UPDATE on Department for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on Department 
+declare numrows INTEGER;
+begin
+  /* Department R/17 Teacher ON PARENT UPDATE SET NULL */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or " */
+    :old.Number <> :new.Number
+  then
+    update Teacher
+      set
+        /* %SetFK(Teacher,NULL) */
+        Teacher.Number = NULL
+      where
+        /* %JoinFKPK(Teacher,:%Old," = ",",") */
+        Teacher.Number = :old.Number;
+  end if;
+
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Department R/16 Specialization ON PARENT UPDATE RESTRICT */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or ") */
+    :old.Number <> :new.Number
+  then
+    select count(*) into numrows
+      from Specialization
+      where
+        /*  %JoinFKPK(Specialization,:%Old," = "," and") */
+        Specialization.Number = :old.Number;
+    if (numrows > 0)
+    then 
+      raise_application_error(
+        -20005,
+        'Cannot UPDATE Department because Specialization exists.'
+      );
+    end if;
+  end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tD_Specialization after DELETE on Specialization for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- DELETE trigger on Specialization 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Specialization R/20 Subject_Specialization ON PARENT DELETE RESTRICT */
+    select count(*) into numrows
+      from Subject_Specialization
+      where
+        /*  %JoinFKPK(Subject_Specialization,:%Old," = "," and") */
+        Subject_Specialization.Coda_specializ = :old.Coda_specializ;
+    if (numrows > 0)
+    then
+      raise_application_error(
+        -20001,
+        'Cannot DELETE Specialization because Subject_Specialization exists.'
+      );
+    end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tI_Specialization after INSERT on Specialization for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- INSERT trigger on Specialization 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Department R/16 Specialization ON CHILD INSERT RESTRICT */
+    select count(*) into numrows
+      from Department
+      where
+        /* %JoinFKPK(:%New,Department," = "," and") */
+        :new.Number = Department.Number;
+    if (
+      /* %NotnullFK(:%New," is not null and") */
+      
+      numrows = 0
+    )
+    then
+      raise_application_error(
+        -20002,
+        'Cannot INSERT Specialization because Department does not exist.'
+      );
+    end if;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Speciality R/15 Specialization ON CHILD INSERT RESTRICT */
+    select count(*) into numrows
+      from Speciality
+      where
+        /* %JoinFKPK(:%New,Speciality," = "," and") */
+        :new.Code_speciality = Speciality.Code_speciality;
+    if (
+      /* %NotnullFK(:%New," is not null and") */
+      
+      numrows = 0
+    )
+    then
+      raise_application_error(
+        -20002,
+        'Cannot INSERT Specialization because Speciality does not exist.'
+      );
+    end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_Specialization after UPDATE on Specialization for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on Specialization 
+declare numrows INTEGER;
+begin
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Specialization R/20 Subject_Specialization ON PARENT UPDATE RESTRICT */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or ") */
+    :old.Coda_specializ <> :new.Coda_specializ
+  then
+    select count(*) into numrows
+      from Subject_Specialization
+      where
+        /*  %JoinFKPK(Subject_Specialization,:%Old," = "," and") */
+        Subject_Specialization.Coda_specializ = :old.Coda_specializ;
+    if (numrows > 0)
+    then 
+      raise_application_error(
+        -20005,
+        'Cannot UPDATE Specialization because Subject_Specialization exists.'
+      );
+    end if;
+  end if;
+
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Department R/16 Specialization ON CHILD UPDATE RESTRICT */
+  select count(*) into numrows
+    from Department
+    where
+      /* %JoinFKPK(:%New,Department," = "," and") */
+      :new.Number = Department.Number;
+  if (
+    /* %NotnullFK(:%New," is not null and") */
+    
+    numrows = 0
+  )
+  then
+    raise_application_error(
+      -20007,
+      'Cannot UPDATE Specialization because Department does not exist.'
+    );
+  end if;
+
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Speciality R/15 Specialization ON CHILD UPDATE RESTRICT */
+  select count(*) into numrows
+    from Speciality
+    where
+      /* %JoinFKPK(:%New,Speciality," = "," and") */
+      :new.Code_speciality = Speciality.Code_speciality;
+  if (
+    /* %NotnullFK(:%New," is not null and") */
+    
+    numrows = 0
+  )
+  then
+    raise_application_error(
+      -20007,
+      'Cannot UPDATE Specialization because Speciality does not exist.'
+    );
+  end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tD_Subject after DELETE on Subject for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- DELETE trigger on Subject 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Subject R/21 Material ON PARENT DELETE SET NULL */
+    update Material
+      set
+        /* %SetFK(Material,NULL) */
+        Material.Code_subj = NULL
+      where
+        /* %JoinFKPK(Material,:%Old," = "," and") */
+        Material.Code_subj = :old.Code_subj;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Subject R/19 Subject_Specialization ON PARENT DELETE RESTRICT */
+    select count(*) into numrows
+      from Subject_Specialization
+      where
+        /*  %JoinFKPK(Subject_Specialization,:%Old," = "," and") */
+        Subject_Specialization.Code_subj = :old.Code_subj;
+    if (numrows > 0)
+    then
+      raise_application_error(
+        -20001,
+        'Cannot DELETE Subject because Subject_Specialization exists.'
+      );
+    end if;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Subject R/5 Subject_Teacher ON PARENT DELETE RESTRICT */
+    select count(*) into numrows
+      from Subject_Teacher
+      where
+        /*  %JoinFKPK(Subject_Teacher,:%Old," = "," and") */
+        Subject_Teacher.Code_subj = :old.Code_subj;
+    if (numrows > 0)
+    then
+      raise_application_error(
+        -20001,
+        'Cannot DELETE Subject because Subject_Teacher exists.'
+      );
+    end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_Subject after UPDATE on Subject for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on Subject 
+declare numrows INTEGER;
+begin
+  /* Subject R/21 Material ON PARENT UPDATE SET NULL */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or " */
+    :old.Code_subj <> :new.Code_subj
+  then
+    update Material
+      set
+        /* %SetFK(Material,NULL) */
+        Material.Code_subj = NULL
+      where
+        /* %JoinFKPK(Material,:%Old," = ",",") */
+        Material.Code_subj = :old.Code_subj;
+  end if;
+
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Subject R/19 Subject_Specialization ON PARENT UPDATE RESTRICT */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or ") */
+    :old.Code_subj <> :new.Code_subj
+  then
+    select count(*) into numrows
+      from Subject_Specialization
+      where
+        /*  %JoinFKPK(Subject_Specialization,:%Old," = "," and") */
+        Subject_Specialization.Code_subj = :old.Code_subj;
+    if (numrows > 0)
+    then 
+      raise_application_error(
+        -20005,
+        'Cannot UPDATE Subject because Subject_Specialization exists.'
+      );
+    end if;
+  end if;
+
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Subject R/5 Subject_Teacher ON PARENT UPDATE RESTRICT */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or ") */
+    :old.Code_subj <> :new.Code_subj
+  then
+    select count(*) into numrows
+      from Subject_Teacher
+      where
+        /*  %JoinFKPK(Subject_Teacher,:%Old," = "," and") */
+        Subject_Teacher.Code_subj = :old.Code_subj;
+    if (numrows > 0)
+    then 
+      raise_application_error(
+        -20005,
+        'Cannot UPDATE Subject because Subject_Teacher exists.'
+      );
+    end if;
+  end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tD_Material after DELETE on Material for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- DELETE trigger on Material 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Material R/22 Disk ON PARENT DELETE SET NULL */
+    update Disk
+      set
+        /* %SetFK(Disk,NULL) */
+        Disk.Code_material = NULL
+      where
+        /* %JoinFKPK(Disk,:%Old," = "," and") */
+        Disk.Code_material = :old.Code_material;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tI_Material after INSERT on Material for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- INSERT trigger on Material 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Subject R/21 Material ON CHILD INSERT SET NULL */
+    update Material
+      set
+        /* %SetFK(Material,NULL) */
+        Material.Code_subj = NULL
+      where
+        not exists (
+          select * from Subject
+            where
+              /* %JoinFKPK(:%New,Subject," = "," and") */
+              :new.Code_subj = Subject.Code_subj
+        ) and
+        /* %JoinPKPK(Material,:%New," = "," and") */
+        Material.Code_material = :new.Code_material;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_Material after UPDATE on Material for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on Material 
+declare numrows INTEGER;
+begin
+  /* Material R/22 Disk ON PARENT UPDATE SET NULL */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or " */
+    :old.Code_material <> :new.Code_material
+  then
+    update Disk
+      set
+        /* %SetFK(Disk,NULL) */
+        Disk.Code_material = NULL
+      where
+        /* %JoinFKPK(Disk,:%Old," = ",",") */
+        Disk.Code_material = :old.Code_material;
+  end if;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Subject R/21 Material ON CHILD UPDATE SET NULL */
+    update Material
+      set
+        /* %SetFK(Material,NULL) */
+        Material.Code_subj = NULL
+      where
+        not exists (
+          select * from Subject
+            where
+              /* %JoinFKPK(:%New,Subject," = "," and") */
+              :new.Code_subj = Subject.Code_subj
+        ) and
+        /* %JoinPKPK(Material,:%New," = "," and") */
+        Material.Code_material = :new.Code_material;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tI_Disk after INSERT on Disk for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- INSERT trigger on Disk 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Material R/22 Disk ON CHILD INSERT SET NULL */
+    update Disk
+      set
+        /* %SetFK(Disk,NULL) */
+        Disk.Code_material = NULL
+      where
+        not exists (
+          select * from Material
+            where
+              /* %JoinFKPK(:%New,Material," = "," and") */
+              :new.Code_material = Material.Code_material
+        ) and
+        /* %JoinPKPK(Disk,:%New," = "," and") */
+        Disk.Link = :new.Link;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_Disk after UPDATE on Disk for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on Disk 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Material R/22 Disk ON CHILD UPDATE SET NULL */
+    update Disk
+      set
+        /* %SetFK(Disk,NULL) */
+        Disk.Code_material = NULL
+      where
+        not exists (
+          select * from Material
+            where
+              /* %JoinFKPK(:%New,Material," = "," and") */
+              :new.Code_material = Material.Code_material
+        ) and
+        /* %JoinPKPK(Disk,:%New," = "," and") */
+        Disk.Link = :new.Link;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tD_Teacher after DELETE on Teacher for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- DELETE trigger on Teacher 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Teacher R/24 Citation ON PARENT DELETE SET NULL */
+    update Citation
+      set
+        /* %SetFK(Citation,NULL) */
+        Citation.ID_teacher = NULL
+      where
+        /* %JoinFKPK(Citation,:%Old," = "," and") */
+        Citation.ID_teacher = :old.ID_teacher;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Teacher R/6 Subject_Teacher ON PARENT DELETE RESTRICT */
+    select count(*) into numrows
+      from Subject_Teacher
+      where
+        /*  %JoinFKPK(Subject_Teacher,:%Old," = "," and") */
+        Subject_Teacher.ID_teacher = :old.ID_teacher;
+    if (numrows > 0)
+    then
+      raise_application_error(
+        -20001,
+        'Cannot DELETE Teacher because Subject_Teacher exists.'
+      );
+    end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tI_Teacher after INSERT on Teacher for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- INSERT trigger on Teacher 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Department R/17 Teacher ON CHILD INSERT SET NULL */
+    update Teacher
+      set
+        /* %SetFK(Teacher,NULL) */
+        Teacher.Number = NULL
+      where
+        not exists (
+          select * from Department
+            where
+              /* %JoinFKPK(:%New,Department," = "," and") */
+              :new.Number = Department.Number
+        ) and
+        /* %JoinPKPK(Teacher,:%New," = "," and") */
+        Teacher.ID_teacher = :new.ID_teacher;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_Teacher after UPDATE on Teacher for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on Teacher 
+declare numrows INTEGER;
+begin
+  /* Teacher R/24 Citation ON PARENT UPDATE SET NULL */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or " */
+    :old.ID_teacher <> :new.ID_teacher
+  then
+    update Citation
+      set
+        /* %SetFK(Citation,NULL) */
+        Citation.ID_teacher = NULL
+      where
+        /* %JoinFKPK(Citation,:%Old," = ",",") */
+        Citation.ID_teacher = :old.ID_teacher;
+  end if;
+
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Teacher R/6 Subject_Teacher ON PARENT UPDATE RESTRICT */
+  if
+    /* %JoinPKPK(:%Old,:%New," <> "," or ") */
+    :old.ID_teacher <> :new.ID_teacher
+  then
+    select count(*) into numrows
+      from Subject_Teacher
+      where
+        /*  %JoinFKPK(Subject_Teacher,:%Old," = "," and") */
+        Subject_Teacher.ID_teacher = :old.ID_teacher;
+    if (numrows > 0)
+    then 
+      raise_application_error(
+        -20005,
+        'Cannot UPDATE Teacher because Subject_Teacher exists.'
+      );
+    end if;
+  end if;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Department R/17 Teacher ON CHILD UPDATE SET NULL */
+    update Teacher
+      set
+        /* %SetFK(Teacher,NULL) */
+        Teacher.Number = NULL
+      where
+        not exists (
+          select * from Department
+            where
+              /* %JoinFKPK(:%New,Department," = "," and") */
+              :new.Number = Department.Number
+        ) and
+        /* %JoinPKPK(Teacher,:%New," = "," and") */
+        Teacher.ID_teacher = :new.ID_teacher;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tI_Citation after INSERT on Citation for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- INSERT trigger on Citation 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Teacher R/24 Citation ON CHILD INSERT SET NULL */
+    update Citation
+      set
+        /* %SetFK(Citation,NULL) */
+        Citation.ID_teacher = NULL
+      where
+        not exists (
+          select * from Teacher
+            where
+              /* %JoinFKPK(:%New,Teacher," = "," and") */
+              :new.ID_teacher = Teacher.ID_teacher
+        ) and
+        /* %JoinPKPK(Citation,:%New," = "," and") */
+        Citation.ID_citation = :new.ID_citation;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_Citation after UPDATE on Citation for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on Citation 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Teacher R/24 Citation ON CHILD UPDATE SET NULL */
+    update Citation
+      set
+        /* %SetFK(Citation,NULL) */
+        Citation.ID_teacher = NULL
+      where
+        not exists (
+          select * from Teacher
+            where
+              /* %JoinFKPK(:%New,Teacher," = "," and") */
+              :new.ID_teacher = Teacher.ID_teacher
+        ) and
+        /* %JoinPKPK(Citation,:%New," = "," and") */
+        Citation.ID_citation = :new.ID_citation;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tI_Bonus_User after INSERT on Bonus_User for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- INSERT trigger on Bonus_User 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* User R/3 Bonus_User ON CHILD INSERT RESTRICT */
+    select count(*) into numrows
+      from User
+      where
+        /* %JoinFKPK(:%New,User," = "," and") */
+        :new.ID = User.ID;
+    if (
+      /* %NotnullFK(:%New," is not null and") */
+      
+      numrows = 0
+    )
+    then
+      raise_application_error(
+        -20002,
+        'Cannot INSERT Bonus_User because User does not exist.'
+      );
+    end if;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Bonus R/2 Bonus_User ON CHILD INSERT RESTRICT */
+    select count(*) into numrows
+      from Bonus
+      where
+        /* %JoinFKPK(:%New,Bonus," = "," and") */
+        :new.Code_bonus = Bonus.Code_bonus;
+    if (
+      /* %NotnullFK(:%New," is not null and") */
+      
+      numrows = 0
+    )
+    then
+      raise_application_error(
+        -20002,
+        'Cannot INSERT Bonus_User because Bonus does not exist.'
+      );
+    end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_Bonus_User after UPDATE on Bonus_User for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on Bonus_User 
+declare numrows INTEGER;
+begin
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* User R/3 Bonus_User ON CHILD UPDATE RESTRICT */
+  select count(*) into numrows
+    from User
+    where
+      /* %JoinFKPK(:%New,User," = "," and") */
+      :new.ID = User.ID;
+  if (
+    /* %NotnullFK(:%New," is not null and") */
+    
+    numrows = 0
+  )
+  then
+    raise_application_error(
+      -20007,
+      'Cannot UPDATE Bonus_User because User does not exist.'
+    );
+  end if;
+
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Bonus R/2 Bonus_User ON CHILD UPDATE RESTRICT */
+  select count(*) into numrows
+    from Bonus
+    where
+      /* %JoinFKPK(:%New,Bonus," = "," and") */
+      :new.Code_bonus = Bonus.Code_bonus;
+  if (
+    /* %NotnullFK(:%New," is not null and") */
+    
+    numrows = 0
+  )
+  then
+    raise_application_error(
+      -20007,
+      'Cannot UPDATE Bonus_User because Bonus does not exist.'
+    );
+  end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tI_Subject_Teacher after INSERT on Subject_Teacher for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- INSERT trigger on Subject_Teacher 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Teacher R/6 Subject_Teacher ON CHILD INSERT RESTRICT */
+    select count(*) into numrows
+      from Teacher
+      where
+        /* %JoinFKPK(:%New,Teacher," = "," and") */
+        :new.ID_teacher = Teacher.ID_teacher;
+    if (
+      /* %NotnullFK(:%New," is not null and") */
+      
+      numrows = 0
+    )
+    then
+      raise_application_error(
+        -20002,
+        'Cannot INSERT Subject_Teacher because Teacher does not exist.'
+      );
+    end if;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Subject R/5 Subject_Teacher ON CHILD INSERT RESTRICT */
+    select count(*) into numrows
+      from Subject
+      where
+        /* %JoinFKPK(:%New,Subject," = "," and") */
+        :new.Code_subj = Subject.Code_subj;
+    if (
+      /* %NotnullFK(:%New," is not null and") */
+      
+      numrows = 0
+    )
+    then
+      raise_application_error(
+        -20002,
+        'Cannot INSERT Subject_Teacher because Subject does not exist.'
+      );
+    end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_Subject_Teacher after UPDATE on Subject_Teacher for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on Subject_Teacher 
+declare numrows INTEGER;
+begin
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Teacher R/6 Subject_Teacher ON CHILD UPDATE RESTRICT */
+  select count(*) into numrows
+    from Teacher
+    where
+      /* %JoinFKPK(:%New,Teacher," = "," and") */
+      :new.ID_teacher = Teacher.ID_teacher;
+  if (
+    /* %NotnullFK(:%New," is not null and") */
+    
+    numrows = 0
+  )
+  then
+    raise_application_error(
+      -20007,
+      'Cannot UPDATE Subject_Teacher because Teacher does not exist.'
+    );
+  end if;
+
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Subject R/5 Subject_Teacher ON CHILD UPDATE RESTRICT */
+  select count(*) into numrows
+    from Subject
+    where
+      /* %JoinFKPK(:%New,Subject," = "," and") */
+      :new.Code_subj = Subject.Code_subj;
+  if (
+    /* %NotnullFK(:%New," is not null and") */
+    
+    numrows = 0
+  )
+  then
+    raise_application_error(
+      -20007,
+      'Cannot UPDATE Subject_Teacher because Subject does not exist.'
+    );
+  end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tI_News_Source after INSERT on News_Source for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- INSERT trigger on News_Source 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Source R/11 News_Source ON CHILD INSERT RESTRICT */
+    select count(*) into numrows
+      from Source
+      where
+        /* %JoinFKPK(:%New,Source," = "," and") */
+        :new.Code_source = Source.Code_source;
+    if (
+      /* %NotnullFK(:%New," is not null and") */
+      
+      numrows = 0
+    )
+    then
+      raise_application_error(
+        -20002,
+        'Cannot INSERT News_Source because Source does not exist.'
+      );
+    end if;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* News R/10 News_Source ON CHILD INSERT RESTRICT */
+    select count(*) into numrows
+      from News
+      where
+        /* %JoinFKPK(:%New,News," = "," and") */
+        :new.Code_news = News.Code_news;
+    if (
+      /* %NotnullFK(:%New," is not null and") */
+      
+      numrows = 0
+    )
+    then
+      raise_application_error(
+        -20002,
+        'Cannot INSERT News_Source because News does not exist.'
+      );
+    end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_News_Source after UPDATE on News_Source for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on News_Source 
+declare numrows INTEGER;
+begin
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Source R/11 News_Source ON CHILD UPDATE RESTRICT */
+  select count(*) into numrows
+    from Source
+    where
+      /* %JoinFKPK(:%New,Source," = "," and") */
+      :new.Code_source = Source.Code_source;
+  if (
+    /* %NotnullFK(:%New," is not null and") */
+    
+    numrows = 0
+  )
+  then
+    raise_application_error(
+      -20007,
+      'Cannot UPDATE News_Source because Source does not exist.'
+    );
+  end if;
+
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* News R/10 News_Source ON CHILD UPDATE RESTRICT */
+  select count(*) into numrows
+    from News
+    where
+      /* %JoinFKPK(:%New,News," = "," and") */
+      :new.Code_news = News.Code_news;
+  if (
+    /* %NotnullFK(:%New," is not null and") */
+    
+    numrows = 0
+  )
+  then
+    raise_application_error(
+      -20007,
+      'Cannot UPDATE News_Source because News does not exist.'
+    );
+  end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tI_Institute_Speciality after INSERT on Institute_Speciality for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- INSERT trigger on Institute_Speciality 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Speciality R/14 Institute_Speciality ON CHILD INSERT RESTRICT */
+    select count(*) into numrows
+      from Speciality
+      where
+        /* %JoinFKPK(:%New,Speciality," = "," and") */
+        :new.Code_speciality = Speciality.Code_speciality;
+    if (
+      /* %NotnullFK(:%New," is not null and") */
+      
+      numrows = 0
+    )
+    then
+      raise_application_error(
+        -20002,
+        'Cannot INSERT Institute_Speciality because Speciality does not exist.'
+      );
+    end if;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Institute R/13 Institute_Speciality ON CHILD INSERT RESTRICT */
+    select count(*) into numrows
+      from Institute
+      where
+        /* %JoinFKPK(:%New,Institute," = "," and") */
+        :new.Code_source = Institute.Code_source;
+    if (
+      /* %NotnullFK(:%New," is not null and") */
+      
+      numrows = 0
+    )
+    then
+      raise_application_error(
+        -20002,
+        'Cannot INSERT Institute_Speciality because Institute does not exist.'
+      );
+    end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_Institute_Speciality after UPDATE on Institute_Speciality for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on Institute_Speciality 
+declare numrows INTEGER;
+begin
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Speciality R/14 Institute_Speciality ON CHILD UPDATE RESTRICT */
+  select count(*) into numrows
+    from Speciality
+    where
+      /* %JoinFKPK(:%New,Speciality," = "," and") */
+      :new.Code_speciality = Speciality.Code_speciality;
+  if (
+    /* %NotnullFK(:%New," is not null and") */
+    
+    numrows = 0
+  )
+  then
+    raise_application_error(
+      -20007,
+      'Cannot UPDATE Institute_Speciality because Speciality does not exist.'
+    );
+  end if;
+
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Institute R/13 Institute_Speciality ON CHILD UPDATE RESTRICT */
+  select count(*) into numrows
+    from Institute
+    where
+      /* %JoinFKPK(:%New,Institute," = "," and") */
+      :new.Code_source = Institute.Code_source;
+  if (
+    /* %NotnullFK(:%New," is not null and") */
+    
+    numrows = 0
+  )
+  then
+    raise_application_error(
+      -20007,
+      'Cannot UPDATE Institute_Speciality because Institute does not exist.'
+    );
+  end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tI_Subject_Specialization after INSERT on Subject_Specialization for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- INSERT trigger on Subject_Specialization 
+declare numrows INTEGER;
+begin
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Specialization R/20 Subject_Specialization ON CHILD INSERT RESTRICT */
+    select count(*) into numrows
+      from Specialization
+      where
+        /* %JoinFKPK(:%New,Specialization," = "," and") */
+        :new.Coda_specializ = Specialization.Coda_specializ;
+    if (
+      /* %NotnullFK(:%New," is not null and") */
+      
+      numrows = 0
+    )
+    then
+      raise_application_error(
+        -20002,
+        'Cannot INSERT Subject_Specialization because Specialization does not exist.'
+      );
+    end if;
+
+    /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+    /* Subject R/19 Subject_Specialization ON CHILD INSERT RESTRICT */
+    select count(*) into numrows
+      from Subject
+      where
+        /* %JoinFKPK(:%New,Subject," = "," and") */
+        :new.Code_subj = Subject.Code_subj;
+    if (
+      /* %NotnullFK(:%New," is not null and") */
+      
+      numrows = 0
+    )
+    then
+      raise_application_error(
+        -20002,
+        'Cannot INSERT Subject_Specialization because Subject does not exist.'
+      );
+    end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
+create trigger tU_Subject_Specialization after UPDATE on Subject_Specialization for each row
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+-- UPDATE trigger on Subject_Specialization 
+declare numrows INTEGER;
+begin
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Specialization R/20 Subject_Specialization ON CHILD UPDATE RESTRICT */
+  select count(*) into numrows
+    from Specialization
+    where
+      /* %JoinFKPK(:%New,Specialization," = "," and") */
+      :new.Coda_specializ = Specialization.Coda_specializ;
+  if (
+    /* %NotnullFK(:%New," is not null and") */
+    
+    numrows = 0
+  )
+  then
+    raise_application_error(
+      -20007,
+      'Cannot UPDATE Subject_Specialization because Specialization does not exist.'
+    );
+  end if;
+
+  /* ERwin Builtin Wed Oct 17 12:04:30 2018 */
+  /* Subject R/19 Subject_Specialization ON CHILD UPDATE RESTRICT */
+  select count(*) into numrows
+    from Subject
+    where
+      /* %JoinFKPK(:%New,Subject," = "," and") */
+      :new.Code_subj = Subject.Code_subj;
+  if (
+    /* %NotnullFK(:%New," is not null and") */
+    
+    numrows = 0
+  )
+  then
+    raise_application_error(
+      -20007,
+      'Cannot UPDATE Subject_Specialization because Subject does not exist.'
+    );
+  end if;
+
+
+-- ERwin Builtin Wed Oct 17 12:04:30 2018
+end;
+/
+
