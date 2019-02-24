@@ -2,24 +2,30 @@
 -- version 4.7.9
 -- https://www.phpmyadmin.net/
 --
--- Хост: 127.0.0.1:3306
--- Время создания: Фев 13 2019 г., 15:24
--- Версия сервера: 5.7.21
--- Версия PHP: 5.6.35
+-- РҐРѕСЃС‚: 127.0.0.1:3306
+-- Р’СЂРµРјСЏ СЃРѕР·РґР°РЅРёСЏ: Р¤РµРІ 24 2019 Рі., 21:18
+-- Р’РµСЂСЃРёСЏ СЃРµСЂРІРµСЂР°: 5.7.21
+-- Р’РµСЂСЃРёСЏ PHP: 5.6.35
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
 --
--- База данных: `120219`
+-- Р‘Р°Р·Р° РґР°РЅРЅС‹С…: `24022019`
 --
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `bonus`
+-- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `bonus`
 --
 
 DROP TABLE IF EXISTS `bonus`;
@@ -33,13 +39,13 @@ CREATE TABLE IF NOT EXISTS `bonus` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `bonus_user`
+-- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `bonus_user`
 --
 
 DROP TABLE IF EXISTS `bonus_user`;
 CREATE TABLE IF NOT EXISTS `bonus_user` (
   `Code_bonus` int(11) NOT NULL,
-  `ID` char(18) NOT NULL,
+  `ID` int(11) NOT NULL,
   PRIMARY KEY (`Code_bonus`,`ID`),
   KEY `ID` (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -47,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `bonus_user` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `citation`
+-- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `citation`
 --
 
 DROP TABLE IF EXISTS `citation`;
@@ -62,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `citation` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `comment`
+-- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `comment`
 --
 
 DROP TABLE IF EXISTS `comment`;
@@ -72,13 +78,14 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `content` varchar(300) NOT NULL,
   `creation_date` date NOT NULL,
   `score` int(11) NOT NULL DEFAULT '0',
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`comment_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `disk`
+-- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `disk`
 --
 
 DROP TABLE IF EXISTS `disk`;
@@ -94,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `disk` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `material`
+-- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `material`
 --
 
 DROP TABLE IF EXISTS `material`;
@@ -112,20 +119,7 @@ CREATE TABLE IF NOT EXISTS `material` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `material_disk`
---
-
-DROP TABLE IF EXISTS `material_disk`;
-CREATE TABLE IF NOT EXISTS `material_disk` (
-  `material_code` int(11) NOT NULL,
-  `disk_link` int(11) NOT NULL,
-  PRIMARY KEY (`disk_link`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `news`
+-- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `news`
 --
 
 DROP TABLE IF EXISTS `news`;
@@ -141,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `news` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `news_source`
+-- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `news_source`
 --
 
 DROP TABLE IF EXISTS `news_source`;
@@ -154,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `news_source` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `source`
+-- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `source`
 --
 
 DROP TABLE IF EXISTS `source`;
@@ -170,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `source` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `subject`
+-- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `subject`
 --
 
 DROP TABLE IF EXISTS `subject`;
@@ -184,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `subject` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `subject_material`
+-- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `subject_material`
 --
 
 DROP TABLE IF EXISTS `subject_material`;
@@ -197,7 +191,7 @@ CREATE TABLE IF NOT EXISTS `subject_material` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `subject_teacher`
+-- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `subject_teacher`
 --
 
 DROP TABLE IF EXISTS `subject_teacher`;
@@ -210,7 +204,7 @@ CREATE TABLE IF NOT EXISTS `subject_teacher` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `teacher`
+-- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `teacher`
 --
 
 DROP TABLE IF EXISTS `teacher`;
@@ -227,43 +221,25 @@ CREATE TABLE IF NOT EXISTS `teacher` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `teacher_citation`
---
-
-DROP TABLE IF EXISTS `teacher_citation`;
-CREATE TABLE IF NOT EXISTS `teacher_citation` (
-  `citation_id` int(11) NOT NULL,
-  `teacher_id` int(11) NOT NULL,
-  PRIMARY KEY (`citation_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `user`
+-- РЎС‚СЂСѓРєС‚СѓСЂР° С‚Р°Р±Р»РёС†С‹ `user`
 --
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
-  `user_id` char(18) NOT NULL,
-  `password` char(18) NOT NULL,
-  `user_group` char(10) NOT NULL,
-  `e-mail` int(35) NOT NULL,
-  `points` int(11) NOT NULL,
-  `extra_info` char(200) DEFAULT NULL,
-  PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `user_comment`
---
-
-DROP TABLE IF EXISTS `user_comment`;
-CREATE TABLE IF NOT EXISTS `user_comment` (
-  `user_id` char(18) NOT NULL,
-  `comment_code` int(11) NOT NULL,
-  PRIMARY KEY (`comment_code`)
+  `id` int(11) NOT NULL,
+  `name` varchar(40) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `group` int(11) DEFAULT NULL,
+  `password` varchar(60) DEFAULT NULL,
+  `role` varchar(30) NOT NULL DEFAULT 'user',
+  `remember_token` varchar(100) DEFAULT NULL,
+  `year` smallint(6) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
