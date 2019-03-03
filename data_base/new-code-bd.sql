@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Фев 24 2019 г., 21:18
+-- Время создания: Мар 02 2019 г., 18:52
 -- Версия сервера: 5.7.21
 -- Версия PHP: 5.6.35
 
@@ -85,17 +85,27 @@ CREATE TABLE IF NOT EXISTS `comment` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `disk`
+-- Структура таблицы `group`
 --
 
-DROP TABLE IF EXISTS `disk`;
-CREATE TABLE IF NOT EXISTS `disk` (
-  `Link` char(100) NOT NULL,
-  `Code_material` int(11) DEFAULT NULL,
-  `Admission_year` int(11) DEFAULT NULL,
-  `Completeness_level` float DEFAULT NULL,
-  PRIMARY KEY (`Link`),
-  KEY `Code_material` (`Code_material`)
+DROP TABLE IF EXISTS `group`;
+CREATE TABLE IF NOT EXISTS `group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `institute_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `institute`
+--
+
+DROP TABLE IF EXISTS `institute`;
+CREATE TABLE IF NOT EXISTS `institute` (
+  `id` int(11) NOT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -112,6 +122,7 @@ CREATE TABLE IF NOT EXISTS `material` (
   `Type` char(18) DEFAULT NULL,
   `Department` int(11) DEFAULT NULL,
   `Semestr` int(11) DEFAULT NULL,
+  `disk` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`Code_material`),
   KEY `Code_subj` (`Code_subj`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -125,24 +136,12 @@ CREATE TABLE IF NOT EXISTS `material` (
 DROP TABLE IF EXISTS `news`;
 CREATE TABLE IF NOT EXISTS `news` (
   `news_code` int(11) NOT NULL,
+  `source_code` int(11) NOT NULL,
   `title` varchar(20) NOT NULL,
   `author` varchar(25) NOT NULL,
   `content` varchar(300) NOT NULL,
   `creation_date` date NOT NULL,
   PRIMARY KEY (`news_code`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `news_source`
---
-
-DROP TABLE IF EXISTS `news_source`;
-CREATE TABLE IF NOT EXISTS `news_source` (
-  `Code_news` int(11) NOT NULL,
-  `Code_source` int(11) NOT NULL,
-  PRIMARY KEY (`Code_news`,`Code_source`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -178,19 +177,6 @@ CREATE TABLE IF NOT EXISTS `subject` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `subject_material`
---
-
-DROP TABLE IF EXISTS `subject_material`;
-CREATE TABLE IF NOT EXISTS `subject_material` (
-  `material_code` int(11) NOT NULL,
-  `subject_code` int(11) NOT NULL,
-  PRIMARY KEY (`material_code`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Структура таблицы `subject_teacher`
 --
 
@@ -213,6 +199,7 @@ CREATE TABLE IF NOT EXISTS `teacher` (
   `department_num` int(11) DEFAULT NULL,
   `photo` blob,
   `fio` varchar(40) NOT NULL,
+  `institute_id` int(11) NOT NULL,
   `description` varchar(300) DEFAULT NULL,
   `is_added` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
