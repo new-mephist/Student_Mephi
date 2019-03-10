@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Мар 03 2019 г., 17:51
+-- Время создания: Мар 09 2019 г., 08:05
 -- Версия сервера: 5.7.24
 -- Версия PHP: 7.2.14
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `03032019`
+-- База данных: `09032019`
 --
 
 -- --------------------------------------------------------
@@ -30,11 +30,11 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `bonus`;
 CREATE TABLE IF NOT EXISTS `bonus` (
-  `Code_bonus` int(11) NOT NULL,
+  `Code_bonus` int(11) NOT NULL AUTO_INCREMENT,
   `Name` char(36) CHARACTER SET utf8 DEFAULT NULL,
   `Score` int(11) DEFAULT NULL,
   PRIMARY KEY (`Code_bonus`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Дамп данных таблицы `bonus`
@@ -100,14 +100,14 @@ INSERT INTO `citation` (`ID_citation`, `ID_teacher`, `Content`) VALUES
 
 DROP TABLE IF EXISTS `comment`;
 CREATE TABLE IF NOT EXISTS `comment` (
-  `comment_code` int(11) NOT NULL,
+  `comment_code` int(11) NOT NULL AUTO_INCREMENT,
   `news_code` int(11) NOT NULL,
   `content` varchar(300) CHARACTER SET utf8 NOT NULL,
   `creation_date` date NOT NULL,
   `score` int(11) NOT NULL DEFAULT '0',
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`comment_code`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Дамп данных таблицы `comment`
@@ -127,6 +127,7 @@ INSERT INTO `comment` (`comment_code`, `news_code`, `content`, `creation_date`, 
 DROP TABLE IF EXISTS `group`;
 CREATE TABLE IF NOT EXISTS `group` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(10) CHARACTER SET utf8 NOT NULL,
   `institute_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
@@ -135,13 +136,13 @@ CREATE TABLE IF NOT EXISTS `group` (
 -- Дамп данных таблицы `group`
 --
 
-INSERT INTO `group` (`id`, `institute_id`) VALUES
-(1, 1),
-(2, 1),
-(3, 2),
-(4, 3),
-(5, 4),
-(6, 4);
+INSERT INTO `group` (`id`, `name`, `institute_id`) VALUES
+(1, 'Б14-506', 1),
+(2, 'Б14-507', 1),
+(3, 'Б14-501', 2),
+(4, 'Б14-503', 3),
+(5, 'Б14-512', 4),
+(6, 'Б14-516', 4);
 
 -- --------------------------------------------------------
 
@@ -151,10 +152,10 @@ INSERT INTO `group` (`id`, `institute_id`) VALUES
 
 DROP TABLE IF EXISTS `institute`;
 CREATE TABLE IF NOT EXISTS `institute` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(500) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Дамп данных таблицы `institute`
@@ -174,7 +175,7 @@ INSERT INTO `institute` (`id`, `description`) VALUES
 
 DROP TABLE IF EXISTS `material`;
 CREATE TABLE IF NOT EXISTS `material` (
-  `Code_material` int(11) NOT NULL,
+  `Code_material` int(11) NOT NULL AUTO_INCREMENT,
   `Code_subj` int(11) DEFAULT NULL,
   `File` blob,
   `Type` char(18) CHARACTER SET utf8 DEFAULT NULL,
@@ -183,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `material` (
   `disk` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`Code_material`),
   KEY `Code_subj` (`Code_subj`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Дамп данных таблицы `material`
@@ -202,14 +203,14 @@ INSERT INTO `material` (`Code_material`, `Code_subj`, `File`, `Type`, `Departmen
 
 DROP TABLE IF EXISTS `news`;
 CREATE TABLE IF NOT EXISTS `news` (
-  `news_code` int(11) NOT NULL,
+  `news_code` int(11) NOT NULL AUTO_INCREMENT,
   `source_code` int(11) NOT NULL,
   `title` varchar(20) CHARACTER SET utf8 NOT NULL,
   `author` varchar(25) CHARACTER SET utf8 NOT NULL,
   `content` varchar(300) CHARACTER SET utf8 NOT NULL,
   `creation_date` date NOT NULL,
   PRIMARY KEY (`news_code`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Дамп данных таблицы `news`
@@ -228,13 +229,13 @@ INSERT INTO `news` (`news_code`, `source_code`, `title`, `author`, `content`, `c
 
 DROP TABLE IF EXISTS `source`;
 CREATE TABLE IF NOT EXISTS `source` (
-  `Code_source` int(11) NOT NULL,
+  `Code_source` int(11) NOT NULL AUTO_INCREMENT,
   `Name` char(100) CHARACTER SET utf8 NOT NULL,
   `link1` varchar(100) CHARACTER SET utf8 NOT NULL,
   `link2` varchar(100) CHARACTER SET utf8 NOT NULL,
   `description` varchar(300) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`Code_source`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Дамп данных таблицы `source`
@@ -253,11 +254,11 @@ INSERT INTO `source` (`Code_source`, `Name`, `link1`, `link2`, `description`) VA
 
 DROP TABLE IF EXISTS `subject`;
 CREATE TABLE IF NOT EXISTS `subject` (
-  `Code_subj` int(11) NOT NULL,
+  `Code_subj` int(11) NOT NULL AUTO_INCREMENT,
   `Name` char(25) CHARACTER SET utf8 DEFAULT NULL,
   `Semestr` int(11) DEFAULT NULL,
   PRIMARY KEY (`Code_subj`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Дамп данных таблицы `subject`
@@ -299,7 +300,7 @@ INSERT INTO `subject_teacher` (`Code_subj`, `ID_teacher`) VALUES
 
 DROP TABLE IF EXISTS `teacher`;
 CREATE TABLE IF NOT EXISTS `teacher` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `department_num` int(11) DEFAULT NULL,
   `photo` blob,
   `fio` varchar(40) CHARACTER SET utf8 NOT NULL,
@@ -307,7 +308,7 @@ CREATE TABLE IF NOT EXISTS `teacher` (
   `description` varchar(300) CHARACTER SET utf8 DEFAULT NULL,
   `is_added` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Дамп данных таблицы `teacher`
@@ -326,7 +327,7 @@ INSERT INTO `teacher` (`id`, `department_num`, `photo`, `fio`, `institute_id`, `
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(40) CHARACTER SET utf8 DEFAULT NULL,
   `email` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
   `group` int(11) DEFAULT NULL,
@@ -337,7 +338,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Дамп данных таблицы `user`
