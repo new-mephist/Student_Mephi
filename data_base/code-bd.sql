@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Мар 13 2019 г., 20:57
+-- Время создания: Мар 13 2019 г., 21:39
 -- Версия сервера: 5.7.24
 -- Версия PHP: 7.2.14
 
@@ -128,7 +128,6 @@ DROP TABLE IF EXISTS `disks`;
 CREATE TABLE IF NOT EXISTS `disks` (
   `Link` char(100) NOT NULL,
   `group_id` int(11) NOT NULL,
-  `Admision_year` int(11) NOT NULL,
   `Completness_level` float NOT NULL,
   PRIMARY KEY (`Link`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -144,6 +143,7 @@ CREATE TABLE IF NOT EXISTS `groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(10) NOT NULL,
   `institute_id` int(11) NOT NULL,
+  `admission_year` int(4) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
@@ -151,13 +151,13 @@ CREATE TABLE IF NOT EXISTS `groups` (
 -- Дамп данных таблицы `groups`
 --
 
-INSERT INTO `groups` (`id`, `name`, `institute_id`) VALUES
-(1, 'Б14-506', 1),
-(2, 'Б14-507', 1),
-(3, 'Б14-501', 2),
-(4, 'Б14-503', 3),
-(5, 'Б14-512', 4),
-(6, 'Б14-516', 4);
+INSERT INTO `groups` (`id`, `name`, `institute_id`, `admission_year`) VALUES
+(1, 'Б14-506', 1, 0),
+(2, 'Б14-507', 1, 0),
+(3, 'Б14-501', 2, 0),
+(4, 'Б14-503', 3, 0),
+(5, 'Б14-512', 4, 0),
+(6, 'Б14-516', 4, 0);
 
 -- --------------------------------------------------------
 
