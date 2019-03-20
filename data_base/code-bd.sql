@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Мар 13 2019 г., 21:39
+-- Время создания: Мар 20 2019 г., 20:33
 -- Версия сервера: 5.7.24
 -- Версия PHP: 7.2.14
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- База данных: `13032019`
 --
+CREATE DATABASE IF NOT EXISTS `13032019` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+USE `13032019`;
 
 -- --------------------------------------------------------
 
@@ -121,6 +123,20 @@ INSERT INTO `comments` (`comment_code`, `news_code`, `content`, `creation_date`,
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `directions`
+--
+
+DROP TABLE IF EXISTS `directions`;
+CREATE TABLE IF NOT EXISTS `directions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8_bin NOT NULL,
+  `institute_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `disks`
 --
 
@@ -143,6 +159,7 @@ CREATE TABLE IF NOT EXISTS `groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(10) NOT NULL,
   `institute_id` int(11) NOT NULL,
+  `direction_id` int(11) NOT NULL,
   `admission_year` int(4) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
@@ -151,13 +168,13 @@ CREATE TABLE IF NOT EXISTS `groups` (
 -- Дамп данных таблицы `groups`
 --
 
-INSERT INTO `groups` (`id`, `name`, `institute_id`, `admission_year`) VALUES
-(1, 'Б14-506', 1, 0),
-(2, 'Б14-507', 1, 0),
-(3, 'Б14-501', 2, 0),
-(4, 'Б14-503', 3, 0),
-(5, 'Б14-512', 4, 0),
-(6, 'Б14-516', 4, 0);
+INSERT INTO `groups` (`id`, `name`, `institute_id`, `direction_id`, `admission_year`) VALUES
+(1, 'Б14-506', 1, 0, 0),
+(2, 'Б14-507', 1, 0, 0),
+(3, 'Б14-501', 2, 0, 0),
+(4, 'Б14-503', 3, 0, 0),
+(5, 'Б14-512', 4, 0, 0),
+(6, 'Б14-516', 4, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -234,6 +251,28 @@ INSERT INTO `news` (`news_code`, `source_code`, `title`, `author`, `content`, `c
 (1, 1, 'авфывф', 'вфвф', 'фвфвфв', '2019-02-12'),
 (2, 1, 'вфвфв', 'вфвф', 'фвфвф', '2019-01-08'),
 (3, 2, 'вфв', 'вфвф', 'вфвйф', '2018-12-03');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `roles`
+--
+
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` int(2) NOT NULL AUTO_INCREMENT,
+  `name` varchar(10) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Дамп данных таблицы `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`) VALUES
+(1, 'admin'),
+(2, 'user'),
+(3, 'moderator');
 
 -- --------------------------------------------------------
 
@@ -357,7 +396,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(50) DEFAULT NULL,
   `group` int(11) DEFAULT NULL,
   `password` char(255) DEFAULT NULL,
-  `role` varchar(30) NOT NULL DEFAULT 'user',
+  `role` int(2) NOT NULL DEFAULT '2',
   `remember_token` varchar(100) DEFAULT NULL,
   `year` smallint(6) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -370,9 +409,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `group`, `password`, `role`, `remember_token`, `year`, `created_at`, `updated_at`) VALUES
-(1, 'a', 'dada', 1, '11111', 'user', 'adada', 2015, '2019-03-03 21:00:00', '2019-03-03 21:00:00'),
-(2, 'b', 'addada', 1, '2222', 'user', NULL, 2015, '2019-02-28 21:00:00', '2019-02-28 21:00:00'),
-(3, 'c', 'aaddad', 2, 'dadad', 'user', NULL, 2016, '2019-02-11 21:00:00', '2019-02-21 21:00:00');
+(1, 'a', 'dada', 1, '11111', 1, 'adada', 2015, '2019-03-03 21:00:00', '2019-03-03 21:00:00'),
+(2, 'b', 'addada', 1, '2222', 1, NULL, 2015, '2019-02-28 21:00:00', '2019-02-28 21:00:00'),
+(3, 'c', 'aaddad', 2, 'dadad', 1, NULL, 2016, '2019-02-11 21:00:00', '2019-02-21 21:00:00');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
