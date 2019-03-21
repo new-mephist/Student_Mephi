@@ -19,10 +19,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `13032019`
+-- База данных: `mephist`
 --
-CREATE DATABASE IF NOT EXISTS `13032019` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
-USE `13032019`;
+CREATE DATABASE IF NOT EXISTS `mephist` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+USE `mephist`;
 
 -- --------------------------------------------------------
 
