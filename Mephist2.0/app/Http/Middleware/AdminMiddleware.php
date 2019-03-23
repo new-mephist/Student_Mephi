@@ -16,7 +16,7 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()['role'] == 'Admin') {
+        if (Auth::user()['role'] == '2') {
             return $next($request);
         }
         else return redirect()->route('NO_ACCESS');
